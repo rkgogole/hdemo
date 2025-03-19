@@ -1,0 +1,13 @@
+IPython
+tenacity
+opencv-python
+
+# Google Cloud integration
+google-cloud-bigquery>=2.30.0
+google-auth>=2.3.0
+google-genai
+google-cloud-storage
+
+nltk>=3.8.1
+numpy>=1.24.0
+pandas>=2.0.0
