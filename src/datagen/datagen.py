@@ -3,7 +3,7 @@ import numpy as np
 import random
 import uuid
 import os
-from datetime import timedelta
+from datetime import timedelta, datetime
 from faker import Faker
 from google.cloud import bigquery
 from google.oauth2 import service_account
@@ -69,6 +69,15 @@ class SyntheticDataGenerator:
         self.customer_df = None
         self.policy_df = None
         self.analytics_df = None
+        self.revenue_df = None
+
+        self.products = [
+            "Comprehensive Insurance",
+            "Third-Party Insurance",
+            "Collision Insurance",
+            "Personal Injury Protection",
+        ]
+        self.categories = ["Basic", "Premium", "Gold", "Platinum"]
 
     def generate_customer_data(self, num_customers=1000):
         """
@@ -237,6 +246,48 @@ class SyntheticDataGenerator:
         self.analytics_df = pd.DataFrame(data)
         return self.analytics_df
 
+    def generate_revenue_data(self, start_date=None, end_date=None):
+        """
+        Generate synthetic daily revenue data for insurance products.
+
+        Args:
+            start_date (datetime, optional): Start date for the revenue data
+            end_date (datetime, optional): End date for the revenue data
+
+        Returns:
+            pandas.DataFrame: DataFrame containing revenue data
+        """
+        if start_date is None:
+            start_date = datetime(2024, 1, 1)
+        if end_date is None:
+            end_date = datetime(2025, 1, 1)
+
+        data = []
+        current_date = start_date
+        delta = timedelta(days=1)
+
+        while current_date <= end_date:
+            product = random.choice(self.products)
+            category = random.choice(self.categories)
+            revenue = round(random.uniform(100, 1000), 2)
+            random_time = datetime.combine(
+                current_date, datetime.min.time()
+            ) + timedelta(seconds=random.randint(0, 86399))
+
+            record = {
+                "date": current_date.strftime("%Y-%m-%d"),
+                "timestamp": random_time.strftime("%Y-%m-%d %H:%M:%S"),
+                "product": product,
+                "category": category,
+                "revenue": revenue,
+            }
+
+            data.append(record)
+            current_date += delta
+
+        self.revenue_df = pd.DataFrame(data)
+        return self.revenue_df
+
     def save_to_parquet(self, output_dir="data"):
         """
         Save all generated data to parquet files.
@@ -265,6 +316,11 @@ class SyntheticDataGenerator:
             analytics_path = os.path.join(output_dir, "analytics.parquet")
             self.analytics_df.to_parquet(analytics_path, index=False)
             paths["analytics"] = analytics_path
+
+        if self.revenue_df is not None:
+            revenue_path = os.path.join(output_dir, "revenue.parquet")
+            self.revenue_df.to_parquet(revenue_path, index=False)
+            paths["revenue"] = revenue_path
 
         return paths
 
@@ -331,18 +387,39 @@ class SyntheticDataGenerator:
             job.result()
             table_refs["analytics"] = table_id
 
+        if self.revenue_df is not None:
+            table_id = f"{dataset_ref}.revenue"
+            job_config = bigquery.LoadJobConfig(
+                write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
+            )
+            job = client.load_table_from_dataframe(
+                self.revenue_df, table_id, job_config=job_config
+            )
+            job.result()
+            table_refs["revenue"] = table_id
+
         return table_refs
 
-    def generate_all_data(self, num_customers=1000, num_sessions_per_customer=3):
+    def generate_all_data(
+        self,
+        num_customers=1000,
+        num_sessions_per_customer=3,
+        generate_revenue=True,
+        revenue_start_date=None,
+        revenue_end_date=None,
+    ):
         """
         Generate all types of data at once.
 
         Args:
             num_customers (int): Number of customer profiles to generate
             num_sessions_per_customer (int): Average number of sessions per customer
+            generate_revenue (bool): Whether to generate revenue data
+            revenue_start_date (datetime, optional): Start date for revenue data
+            revenue_end_date (datetime, optional): End date for revenue data
 
         Returns:
-            tuple: (customer_df, policy_df, analytics_df)
+            tuple: (customer_df, policy_df, analytics_df, revenue_df)
         """
         self.generate_customer_data(num_customers)
         self.generate_policy_data()
@@ -350,21 +427,25 @@ class SyntheticDataGenerator:
             num_sessions_per_customer=num_sessions_per_customer
         )
 
-        return self.customer_df, self.policy_df, self.analytics_df
+        if generate_revenue:
+            self.generate_revenue_data(
+                start_date=revenue_start_date, end_date=revenue_end_date
+            )
+
+        return self.customer_df, self.policy_df, self.analytics_df, self.revenue_df
 
 
 if __name__ == "__main__":
     generator = SyntheticDataGenerator(seed=42)
 
-    customers, policies, analytics = generator.generate_all_data(
-        num_customers=50, num_sessions_per_customer=3
+    customers, policies, analytics, revenue = generator.generate_all_data(
+        num_customers=50, num_sessions_per_customer=3, generate_revenue=True
     )
 
     paths = generator.save_to_parquet(output_dir="data")
     print(f"Data saved to: {paths}")
 
     table_refs = generator.load_to_bigquery(
-        project_id=PROJECT_ID,
-        dataset_id=DATASET_ID
+        project_id=PROJECT_ID, dataset_id=DATASET_ID
     )
     print(f"Data loaded to BigQuery tables: {table_refs}")
