@@ -357,7 +357,7 @@ if __name__ == "__main__":
     generator = SyntheticDataGenerator(seed=42)
 
     customers, policies, analytics = generator.generate_all_data(
-        num_customers=2000, num_sessions_per_customer=3
+        num_customers=50, num_sessions_per_customer=3
     )
 
     paths = generator.save_to_parquet(output_dir="data")

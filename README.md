@@ -13,9 +13,6 @@ gcloud services enable cloudresourcemanager.googleapis.com
 gcloud services enable aiplatform.googleapis.com
 gcloud services enable bigquery.googleapis.com
 gcloud services enable iam.googleapis.com
-gcloud services enable documentai.googleapis.com
-gcloud services enable cloudaicompanion.googleapis.com
-gcloud services enable discoveryengine.googleapis.com
 
 sleep 60
 
@@ -56,8 +53,12 @@ Leave all the configuration as default.
 Once the notebook is created, click on `OPEN JUPYTERLAB` to open the web interface.
 Click on Git > Clone a Repository and enter the following URL `https://github.com/rkgogole/hdemo`.
 
-Now, edit the `src/datagen/launch_datagen.sh` script and ammend the values maked with `TO_DO_DEVELOPER`
-Now, open a Terminal on the notebook and run the shell script.
+Now, edit the `hdemo/src/datagen/launch_datagen.sh` script and ammend the values maked with `TO_DO_DEVELOPER`
+Now, open a Terminal on the notebook and run the shell script, navigate to the datagen folder and:
+
+```bash
+source lanch_datagen.sh
+```
 
 This concludes the lab setup.
 
@@ -65,7 +66,12 @@ This concludes the lab setup.
 
 Now you can follow the lab instructions on the following notebooks.
 
-You can run all of them with de default Python3 kernel
+You can run all of them with default Python3 kernel
 
 - Lab #1: Smart segmentation
-  - [Code](src/notebooks/smart_segmentation.ipynb)
+  - [Code](src/notebooks/01_smart_segmentation.ipynb)
+- Lab #2: Hyper personalized emails
+  - [Code](src/notebooks/02_campaign_assets_hyper_personalized_email.ipynb)
+- Lab #3: TimesFM forecasting
+  - [Code](src/notebooks/UPDATE.ipynb)
+
