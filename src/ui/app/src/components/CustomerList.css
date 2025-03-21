@@ -1,0 +1,139 @@
+.customer-list {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.customer-list h2 {
+  margin-bottom: 16px;
+  color: #003781; /* Allianz blue */
+  font-weight: 600;
+}
+
+.table-container {
+  overflow-x: auto;
+  max-height: 600px;
+  overflow-y: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.customer-list table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.customer-list th,
+.customer-list td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.customer-list th {
+  background-color: #003781; /* Allianz blue */
+  color: white;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.customer-list tr:hover {
+  background-color: #e6f0fa; /* Light Allianz blue */
+}
+
+.expand-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #0066b3; /* Allianz light blue */
+  font-size: 14px;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+}
+
+tr.expanded {
+  background-color: #e6f0fa; /* Light Allianz blue */
+}
+
+.details-row {
+  background-color: #f8f9fa;
+}
+
+.details-row td {
+  padding: 0;
+}
+
+.customer-details {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px;
+  gap: 24px;
+}
+
+.details-section {
+  flex: 1 1 200px;
+}
+
+.details-section.full-width {
+  flex: 1 1 100%;
+}
+
+.details-section h4 {
+  margin-bottom: 8px;
+  color: #003781; /* Allianz blue */
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.details-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.details-section li {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.customer-description {
+  background-color: #e6f0fa; /* Light Allianz blue */
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.loading,
+.error,
+.no-results {
+  padding: 40px;
+  text-align: center;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  color: #666;
+}
+
+.error {
+  color: #d32f2f;
+  background-color: #ffebee;
+}
+
+@media (max-width: 768px) {
+  .customer-list th,
+  .customer-list td {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .customer-details {
+    flex-direction: column;
+    gap: 16px;
+  }
+}

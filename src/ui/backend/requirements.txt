@@ -1,0 +1,9 @@
+fastapi>=0.95.0
+uvicorn>=0.22.0
+pydantic>=1.10.7
+google-cloud-bigquery>=3.9.0
+google-generativeai>=0.3.0
+python-multipart>=0.0.6
+typing-extensions>=4.5.0
+pandas>=1.5.0
+db-dtypes

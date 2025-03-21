@@ -1,0 +1,3 @@
+src/ui/app/node_modules/*
+src/ui/backend/venv/*
+src/ui/backend/__pycache__/*

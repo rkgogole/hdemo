@@ -62,7 +62,7 @@ source lanch_datagen.sh
 
 This concludes the lab setup.
 
-## Labs
+## Interactive Labs
 
 Now you can follow the lab instructions on the following notebooks.
 
@@ -74,3 +74,20 @@ You can run all of them with default Python3 kernel
   - [Code](src/notebooks/02_campaign_assets_hyper_personalized_email.ipynb)
 - Lab #3: TimesFM forecasting
   - [Code](src/notebooks/03_revenue_forecast.ipynb)
+
+## Sample UI
+
+This repository also contains sample UI, to run it perform the following steps:
+
+1. Edit the `src/ui/backend/main.py` script and change the following lines:
+
+```python
+
+PROJECT_ID = "TO_DO_DEVELOPER"
+GCP_LOCATION = "TO_DO_DEVELOPER"
+DATASET_ID = "TO_DO_DEVELOPER"
+
+```
+
+2. Execute the `run_app_local.sh` script located under `src/ui`
+3. From a browser connect to https://localhost:3000
