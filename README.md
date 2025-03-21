@@ -73,5 +73,4 @@ You can run all of them with default Python3 kernel
 - Lab #2: Hyper personalized emails
   - [Code](src/notebooks/02_campaign_assets_hyper_personalized_email.ipynb)
 - Lab #3: TimesFM forecasting
-  - [Code](src/notebooks/UPDATE.ipynb)
-
+  - [Code](src/notebooks/03_revenue_forecast.ipynb)
